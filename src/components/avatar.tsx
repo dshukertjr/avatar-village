@@ -10,15 +10,15 @@ export interface Position {
   y: number;
 }
 
-export enum Color {
-  red = 'red',
-  yellow = 'yellow',
-  purpole = 'purpole',
-  pink = 'pink',
-  green = 'green',
-  black = 'black',
-  brown = 'brown',
-}
+export const COLORS = [
+  '#F87171',
+  '#FBBF24',
+  '#818CF8',
+  '#F472B6',
+  '#34D399',
+  '#000',
+  '#D3A327',
+];
 
 export enum FaceType {
   round = 'round',
@@ -32,35 +32,18 @@ export enum BodyType {
   bottomCorner = 'bottomCorner',
 }
 
-const colorToColorCode = (color: Color): string => {
-  switch (color) {
-    case Color.red:
-      return '#F87171';
-    case Color.yellow:
-      return '#FBBF24';
-    case Color.purpole:
-      return '#818CF8';
-    case Color.pink:
-      return '#F472B6';
-    case Color.green:
-      return '#34D399';
-    case Color.black:
-      return '#000';
-    case Color.brown:
-      return '#D3A327';
-    default:
-      return '#F87171';
-  }
-};
+export interface AvatarStyle {
+  faceType: FaceType;
+  faceColor: string;
+  bodyType: BodyType;
+  bodyColor: string;
+  handColor: string;
+  legColor: string;
+}
 
 export interface AvatarAttributes {
+  style: AvatarStyle;
   position: Position;
-  faceType: FaceType;
-  faceColor: Color;
-  bodyType: BodyType;
-  bodyColor: Color;
-  handColor: Color;
-  legColor: Color;
   message?: string;
 }
 
@@ -78,6 +61,7 @@ export default function Avatar({
       style={{
         left: `${attributes.position.x}%`,
         top: `${attributes.position.y}%`,
+        zIndex: Math.round(attributes.position.y + 1000),
       }}
     >
       <div onClick={clickedAvatar} className={styles.avatar}>
@@ -85,21 +69,21 @@ export default function Avatar({
           <div className={styles.message}>{attributes.message}</div>
         ) : null}
         <div className={styles.leg}>
-          <Leg color={colorToColorCode(attributes.legColor)}></Leg>
+          <Leg color={attributes.style.legColor}></Leg>
         </div>
         <div className={styles.body}>
           <Body
-            type={attributes.bodyType}
-            color={colorToColorCode(attributes.bodyColor)}
+            type={attributes.style.bodyType}
+            color={attributes.style.bodyColor}
           ></Body>
         </div>
         <div className={styles.hand}>
-          <Hand color={colorToColorCode(attributes.handColor)}></Hand>
+          <Hand color={attributes.style.handColor}></Hand>
         </div>
         <div className={styles.face}>
           <Face
-            type={attributes.faceType}
-            color={colorToColorCode(attributes.faceColor)}
+            type={attributes.style.faceType}
+            color={attributes.style.faceColor}
           ></Face>
         </div>
       </div>
