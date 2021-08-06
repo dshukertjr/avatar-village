@@ -3,6 +3,7 @@ import Face from './avatar/face';
 import styles from '../styles/Avatar.module.css';
 import Hand from './avatar/hand';
 import Leg from './avatar/leg';
+import { ReactElement } from 'react';
 
 export enum Color {
   red = 'red',
@@ -60,7 +61,7 @@ export default function Avatar({
   attributes,
 }: {
   attributes: AvatarAttributes;
-}) {
+}): ReactElement {
   const clickedAvatar = (): void => {
     console.log('clicked avatar');
   };

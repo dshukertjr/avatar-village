@@ -3,7 +3,7 @@ import styles from '../styles/Home.module.css';
 import Image from 'next/image';
 import buildingPic from '../../public/img/buildings.svg';
 import cloudsPic from '../../public/img/clouds.svg';
-import React, { MouseEvent, useState } from 'react';
+import React, { useState } from 'react';
 import Avatar, { BodyType, Color, FaceType } from '../components/avatar';
 
 interface Position {
@@ -12,12 +12,15 @@ interface Position {
 }
 
 export default function Home() {
-  const [myPosition, setMyPosition] = useState<Position>();
+  const [myPosition, setMyPosition] = useState<Position>({ x: 0, y: 0 });
+
   const clickedGrass = (e: any): void => {
     if (e.target.id !== 'grass') {
       return;
     }
-    console.log('client', `${e.clientX}, ${e.clientY}`);
+    const x = e.clientX - 167 / 2;
+    const y = e.clientY - 314 - 239;
+    setMyPosition({ x, y });
   };
   return (
     <div>
@@ -30,7 +33,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="h-screen">
+      <main className="h-screen flex flex-col items-stretch overflow-hidden">
         <div className={`${styles.sky} relative`}>
           <div
             className={`${styles.font0} absolute bottom-0 left-0 right-0 flex justify-center`}
@@ -53,16 +56,25 @@ export default function Home() {
           className={`${styles.grass} relative`}
           onClick={clickedGrass}
         >
-          <Avatar
-            attributes={{
-              faceType: FaceType.square,
-              faceColor: Color.red,
-              bodyType: BodyType.topCorner,
-              bodyColor: Color.green,
-              handColor: Color.pink,
-              legColor: Color.black,
+          <div
+            className={styles.avatar}
+            style={{
+              position: 'absolute',
+              left: myPosition.x,
+              top: myPosition.y,
             }}
-          ></Avatar>
+          >
+            <Avatar
+              attributes={{
+                faceType: FaceType.square,
+                faceColor: Color.red,
+                bodyType: BodyType.topCorner,
+                bodyColor: Color.green,
+                handColor: Color.pink,
+                legColor: Color.black,
+              }}
+            ></Avatar>
+          </div>
         </div>
       </main>
     </div>
