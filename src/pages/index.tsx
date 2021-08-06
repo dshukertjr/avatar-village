@@ -1,10 +1,15 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Image from 'next/image'
-import buildingPic from '../public/img/buildings.svg'
+import buildingPic from '../../public/img/buildings.svg'
+import cloudsPic from '../../public/img/clouds.svg'
+import React, { Component, MouseEvent } from 'react';
 
 
 export default function Home() {
+  const clickedGrass = (e: MouseEvent): void => {
+    console.log('client', `${e.clientX}, ${e.clientY}`)
+  }
   return (
     <div>
       <Head>
@@ -18,8 +23,14 @@ export default function Home() {
           <div className={`${styles.font0} absolute bottom-0 left-0 right-0 flex justify-center`}>
             <Image src={buildingPic} alt="background buildings" />
           </div>
+          <div className={`${styles.font0} ${styles.cloud} absolute top-2 left-0 w-screen flex justify-center`}>
+            <Image src={cloudsPic} alt="background clouds" />
+          </div>
+          <div className={`${styles.font0} ${styles.cloud} absolute top-2 right-full w-screen flex justify-center`}>
+            <Image src={cloudsPic} alt="background clouds" />
+          </div>
         </div>
-        <div className={styles.grass}>
+        <div className={`${styles.grass} relative`} onClick={clickedGrass}>
 
         </div>
       </main>
