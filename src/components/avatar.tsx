@@ -5,6 +5,11 @@ import Hand from './avatar/hand';
 import Leg from './avatar/leg';
 import { ReactElement } from 'react';
 
+export interface Position {
+  x: number;
+  y: number;
+}
+
 export enum Color {
   red = 'red',
   yellow = 'yellow',
@@ -49,12 +54,14 @@ const colorToColorCode = (color: Color): string => {
 };
 
 export interface AvatarAttributes {
+  position: Position;
   faceType: FaceType;
   faceColor: Color;
   bodyType: BodyType;
   bodyColor: Color;
   handColor: Color;
   legColor: Color;
+  message?: string;
 }
 
 export default function Avatar({
@@ -66,24 +73,35 @@ export default function Avatar({
     console.log('clicked avatar');
   };
   return (
-    <div onClick={clickedAvatar} className={styles.avatar}>
-      <div className={styles.leg}>
-        <Leg color={colorToColorCode(attributes.legColor)}></Leg>
-      </div>
-      <div className={styles.body}>
-        <Body
-          type={attributes.bodyType}
-          color={colorToColorCode(attributes.bodyColor)}
-        ></Body>
-      </div>
-      <div className={styles.hand}>
-        <Hand color={colorToColorCode(attributes.handColor)}></Hand>
-      </div>
-      <div className={styles.face}>
-        <Face
-          type={attributes.faceType}
-          color={colorToColorCode(attributes.faceColor)}
-        ></Face>
+    <div
+      className={styles.avatar}
+      style={{
+        left: `${attributes.position.x}%`,
+        top: `${attributes.position.y}%`,
+      }}
+    >
+      <div onClick={clickedAvatar} className={styles.avatar}>
+        {attributes.message ? (
+          <div className={styles.message}>{attributes.message}</div>
+        ) : null}
+        <div className={styles.leg}>
+          <Leg color={colorToColorCode(attributes.legColor)}></Leg>
+        </div>
+        <div className={styles.body}>
+          <Body
+            type={attributes.bodyType}
+            color={colorToColorCode(attributes.bodyColor)}
+          ></Body>
+        </div>
+        <div className={styles.hand}>
+          <Hand color={colorToColorCode(attributes.handColor)}></Hand>
+        </div>
+        <div className={styles.face}>
+          <Face
+            type={attributes.faceType}
+            color={colorToColorCode(attributes.faceColor)}
+          ></Face>
+        </div>
       </div>
     </div>
   );

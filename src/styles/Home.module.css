@@ -27,8 +27,3 @@
     transform: translateX(100%);
   }
 }
-
-.avatar {
-  position: absolute;
-  transition: all 0.6s;
-}

@@ -4,12 +4,12 @@ import Image from 'next/image';
 import buildingPic from '../../public/img/buildings.svg';
 import cloudsPic from '../../public/img/clouds.svg';
 import React, { useState } from 'react';
-import Avatar, { BodyType, Color, FaceType } from '../components/avatar';
-
-interface Position {
-  x: number;
-  y: number;
-}
+import Avatar, {
+  BodyType,
+  Color,
+  FaceType,
+  Position,
+} from '../components/avatar';
 
 export default function Home() {
   const [myPosition, setMyPosition] = useState<Position>({ x: 0, y: 0 });
@@ -18,8 +18,12 @@ export default function Home() {
     if (e.target.id !== 'grass') {
       return;
     }
-    const x = e.clientX - 167 / 2;
-    const y = e.clientY - 314 - 239;
+    const grassWidth = window.innerWidth;
+    const grassHeight = window.innerHeight - 314;
+    const clickedX = e.clientX - 167 / 2;
+    const clickedY = e.clientY - 314 - 239;
+    const x = (clickedX * 100) / grassWidth;
+    const y = (clickedY * 100) / grassHeight;
     setMyPosition({ x, y });
   };
   return (
@@ -56,25 +60,17 @@ export default function Home() {
           className={`${styles.grass} relative`}
           onClick={clickedGrass}
         >
-          <div
-            className={styles.avatar}
-            style={{
-              position: 'absolute',
-              left: myPosition.x,
-              top: myPosition.y,
+          <Avatar
+            attributes={{
+              position: myPosition,
+              faceType: FaceType.square,
+              faceColor: Color.red,
+              bodyType: BodyType.topCorner,
+              bodyColor: Color.green,
+              handColor: Color.pink,
+              legColor: Color.black,
             }}
-          >
-            <Avatar
-              attributes={{
-                faceType: FaceType.square,
-                faceColor: Color.red,
-                bodyType: BodyType.topCorner,
-                bodyColor: Color.green,
-                handColor: Color.pink,
-                legColor: Color.black,
-              }}
-            ></Avatar>
-          </div>
+          ></Avatar>
         </div>
       </main>
     </div>

@@ -26,3 +26,19 @@
     bottom: 0;
     left: 42.84px;
 }
+
+.message {
+    position: absolute;
+    bottom: 104%;
+    left: 0;
+    right: 0;
+    padding: 4px 12px;
+    border: 3px solid #000;
+    background-color: #fff;
+    border-radius: 12px;
+}
+
+.avatar {
+    position: absolute;
+    transition: all 0.6s;
+}
