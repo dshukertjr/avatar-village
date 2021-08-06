@@ -1,0 +1,28 @@
+.avatar {
+    width: 167px;
+    height: 239px;
+    position: absolute;
+}
+
+.face {
+    position: absolute;
+    left: 29.77px;
+}
+
+.body {
+    position: absolute;
+    left: 18.15px;
+    top: 82.44px;
+}
+
+.hand {
+    position: absolute;
+    top: 111.43px;
+    left: 0;
+}
+
+.leg {
+    position: absolute;
+    bottom: 0;
+    left: 42.84px;
+}

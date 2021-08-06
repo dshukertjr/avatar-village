@@ -13,7 +13,7 @@
 }
 
 .cloud {
-  animation-duration: 36s;
+  animation-duration: 200s;
   animation-name: slidein;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
