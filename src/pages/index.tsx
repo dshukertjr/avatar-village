@@ -61,7 +61,7 @@ export default function Home() {
         }
       }
       const thirtyMinutesAgo = new Date();
-      thirtyMinutesAgo.setMinutes(thirtyMinutesAgo.getMinutes() - 10);
+      thirtyMinutesAgo.setMinutes(thirtyMinutesAgo.getMinutes() - 30);
       const { data } = await supabase
         .from('users')
         .select()
@@ -86,11 +86,12 @@ export default function Home() {
             } else {
               if (_avatars[targetIndex].message != newRecord.message) {
                 playMessage();
+              } else if (_avatars[targetIndex].position.x != newRecord.x) {
+                playWalk();
               }
               _avatars[targetIndex] = convertRowToAttributes(newRecord);
             }
             setAvatars([..._avatars]);
-            console.log('setAvatars called');
           }
         })
         .subscribe();
