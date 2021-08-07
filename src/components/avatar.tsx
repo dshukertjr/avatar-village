@@ -60,8 +60,8 @@ export default function Avatar({
       className={styles.avatar}
       style={{
         left: `${attributes.position.x}%`,
-        top: `${attributes.position.y}%`,
-        zIndex: Math.round(attributes.position.y + 1000),
+        bottom: `${attributes.position.y}%`,
+        zIndex: Math.round(attributes.position.y),
       }}
     >
       <div onClick={clickedAvatar} className={styles.avatar}>

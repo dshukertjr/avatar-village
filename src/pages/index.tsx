@@ -3,7 +3,7 @@ import styles from '../styles/Home.module.css';
 import Image from 'next/image';
 import buildingPic from '../../public/img/buildings.svg';
 import cloudsPic from '../../public/img/clouds.svg';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar, {
   AvatarStyle,
   BodyType,
@@ -11,8 +11,30 @@ import Avatar, {
   FaceType,
   Position,
 } from '../components/avatar';
+import { makeid, supabase } from '../util/constants';
 
 export default function Home() {
+  useEffect(() => {
+    const setup = async () => {
+      let user = supabase.auth.user();
+      console.log('user', user);
+      if (!user) {
+        await supabase.auth.signUp({
+          email: `${makeid(10)}@sample.com`,
+          password: makeid(12),
+        });
+        const user = supabase.auth.user();
+        setUserId(user?.id);
+      } else {
+        const user = supabase.auth.user();
+        setUserId(user?.id);
+      }
+    };
+    setup();
+  }, []);
+
+  const [userId, setUserId] = useState<string>();
+
   const [myPosition, setMyPosition] = useState<Position>({ x: 0, y: 0 });
   const [myAvatar, setMyAvatar] = useState<AvatarStyle>({
     faceType: FaceType.round,
@@ -26,17 +48,25 @@ export default function Home() {
 
   const [typedMessage, setTypedMessage] = useState<string>('');
 
-  const clickedGrass = (e: any): void => {
+  const move = async (e: any): Promise<void> => {
     if (e.target.id !== 'grass') {
       return;
     }
     const grassWidth = window.innerWidth;
     const grassHeight = window.innerHeight - 314;
     const clickedX = e.clientX - 167 / 2;
-    const clickedY = e.clientY - 314 - 239;
+    const clickedY = grassHeight - (e.clientY - 314);
+    console.log('clientY', e.clientY);
     const x = (clickedX * 100) / grassWidth;
     const y = (clickedY * 100) / grassHeight;
     setMyPosition({ x, y });
+    if (userId) {
+      await supabase.from('users').upsert({
+        id: userId,
+        x,
+        y,
+      });
+    }
   };
 
   const getRandomColor = (): string => {
@@ -69,6 +99,8 @@ export default function Home() {
   };
 
   const changeAvatar = () => {
+    const user = supabase.auth.user();
+    console.log('user', user);
     setMyAvatar({
       faceType: getRandomFaceType(),
       faceColor: getRandomColor(),
@@ -117,11 +149,7 @@ export default function Home() {
             <Image src={cloudsPic} alt="background clouds" />
           </div>
         </div>
-        <div
-          id="grass"
-          className={`${styles.grass} relative`}
-          onClick={clickedGrass}
-        >
+        <div id="grass" className={`${styles.grass} relative`} onClick={move}>
           <Avatar
             attributes={{
               position: myPosition,
