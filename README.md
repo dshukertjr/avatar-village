@@ -4,6 +4,8 @@ Avatar Village is a place where people can gather to hang out. You can move arou
 
 Come try it out here: https://avatar-village.vercel.app/
 
+Avatar Village utilizes realtime capability of Supabase to enable realtime sync of avatars and chats!
+
 ![Main Visual](https://raw.githubusercontent.com/dshukertjr/avatar-village/main/img/visual.png)
 
 ## Figma
