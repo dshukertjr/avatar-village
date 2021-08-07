@@ -28,7 +28,7 @@ export default function Home() {
           email: `${makeid(10)}@sample.com`,
           password: makeid(12),
         });
-        const user = supabase.auth.user();
+        user = supabase.auth.user();
         setUserId(user?.id);
       } else {
         setUserId(user!.id);
