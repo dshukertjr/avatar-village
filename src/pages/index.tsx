@@ -59,6 +59,28 @@ export default function Home() {
           .map((row) => convertRowToAttributes(row));
         setAvatars(_avatars);
       }
+      supabase
+        .from('users')
+        .on('*', (payload) => {
+          const newRecord = payload.new;
+          console.log('newRecord', newRecord);
+          console.log('userId', user!.id);
+          if (newRecord.id != user!.id) {
+            const targetIndex = avatars.findIndex(
+              (avatar) => newRecord.id == avatar.id
+            );
+            const _avatars = avatars;
+            if (targetIndex < 0) {
+              _avatars.push(convertRowToAttributes(newRecord));
+            } else {
+              const _avatars = avatars;
+              _avatars[targetIndex] = convertRowToAttributes(newRecord);
+            }
+            setAvatars(_avatars);
+            console.log('set avatars called', _avatars);
+          }
+        })
+        .subscribe();
     };
     setup();
   }, []);
@@ -75,7 +97,7 @@ export default function Home() {
     legColor: '#000',
   });
   const [myMessage, setMyMessage] = useState<string>();
-  const [myName, setMyName] = useState<string>();
+  const [myName, setMyName] = useState<string>('');
   const [typedMessage, setTypedMessage] = useState<string>('');
 
   const [avatars, setAvatars] = useState<AvatarAttributes[]>([]);
@@ -238,6 +260,7 @@ export default function Home() {
         <div id="grass" className={`${styles.grass} relative`} onClick={move}>
           {userId ? (
             <Avatar
+              key="myAvatar"
               attributes={{
                 position: myPosition,
                 style: myAvatar,
@@ -288,7 +311,7 @@ export default function Home() {
           onChange={(e) => setTypedMessage(e.target.value)}
           placeholder="Say hello to everyone!"
         />
-        <div className="w-12"></div>
+        <div className="w-4"></div>
         <button className="h-16 w-28 flex items-center justify-center bg-indigo-400 border-2 border-black rounded-full text-white text-lg">
           Send
         </button>
