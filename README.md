@@ -13,6 +13,7 @@ https://www.figma.com/file/SjMWKsMuLKU5Owgs9pQqPH/Supabase-Hackathon?node-id=2%3
 ```sql
 create table if not exists public.users (
   id uuid references auth.users on delete cascade not null primary key,
+  name text,
   x real,
   y real,
   face_type text,

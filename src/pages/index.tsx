@@ -45,6 +45,7 @@ export default function Home() {
     legColor: '#000',
   });
   const [myMessage, setMyMessage] = useState<string>();
+  const [myName, setMyName] = useState<string>();
 
   const [typedMessage, setTypedMessage] = useState<string>('');
 
@@ -126,13 +127,31 @@ export default function Home() {
     }
   };
 
-  const submitMessage = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!typedMessage) {
       return;
     }
     setMyMessage(typedMessage);
     setTypedMessage('');
+    if (userId) {
+      await supabase.from('users').upsert({
+        id: userId,
+        message: typedMessage,
+      });
+    }
+  };
+
+  const setUserName = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const userName = e.target.value;
+    setMyName(userName);
+    if (userId) {
+      await supabase.from('users').upsert({
+        id: userId,
+        name: userName,
+      });
+    }
   };
 
   return (
@@ -170,6 +189,7 @@ export default function Home() {
               position: myPosition,
               style: myAvatar,
               message: myMessage,
+              name: myName,
             }}
           ></Avatar>
         </div>
@@ -195,6 +215,14 @@ export default function Home() {
         className={`flex fixed bottom-4 left-1/2 ${styles.form} ${styles.front}`}
         onSubmit={submitMessage}
       >
+        <input
+          className="rounded-full border-2 border-black px-8 w-40 text-lg outline-none"
+          type="text"
+          value={myName}
+          onChange={setUserName}
+          placeholder="User Name"
+        />
+        <div className="w-12"></div>
         <input
           className="rounded-full border-2 border-black px-8 w-96 text-lg outline-none"
           type="text"

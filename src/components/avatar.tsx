@@ -45,6 +45,7 @@ export interface AvatarAttributes {
   style: AvatarStyle;
   position: Position;
   message?: string;
+  name?: string;
 }
 
 export default function Avatar({
@@ -72,6 +73,11 @@ export default function Avatar({
           <Leg color={attributes.style.legColor}></Leg>
         </div>
         <div className={styles.body}>
+          {attributes.name ? (
+            <div className="absolute inset-0 flex justify-center items-center text-white">
+              {attributes.name}
+            </div>
+          ) : null}
           <Body
             type={attributes.style.bodyType}
             color={attributes.style.bodyColor}
