@@ -21,6 +21,18 @@ create table if not exists public.users (
   body_color text,
   hand_color text,
   leg_color text,
-  message text
+  message text,
+  updated_at timestamp with time zone default timezone('utc' :: text, now()) not null,
 );
+
+CREATE OR REPLACE FUNCTION update_timestamp_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = now();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER update_user_timestamp BEFORE UPDATE ON user FOR EACH ROW EXECUTE PROCEDURE  update_timestamp_column();
+
 ```

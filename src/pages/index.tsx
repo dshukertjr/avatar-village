@@ -54,7 +54,7 @@ export default function Home() {
     }
     const grassWidth = window.innerWidth;
     const grassHeight = window.innerHeight - 314;
-    const clickedX = e.clientX - 167 / 2;
+    const clickedX = e.clientX;
     const clickedY = grassHeight - (e.clientY - 314);
     console.log('clientY', e.clientY);
     const x = (clickedX * 100) / grassWidth;
@@ -98,17 +98,32 @@ export default function Home() {
     return BodyType.round;
   };
 
-  const changeAvatar = () => {
-    const user = supabase.auth.user();
-    console.log('user', user);
+  const changeAvatar = async (): Promise<void> => {
+    const faceType = getRandomFaceType();
+    const faceColor = getRandomColor();
+    const bodyType = getRandomBodyType();
+    const bodyColor = getRandomColor();
+    const handColor = getRandomColor();
+    const legColor = getRandomColor();
     setMyAvatar({
-      faceType: getRandomFaceType(),
-      faceColor: getRandomColor(),
-      bodyType: getRandomBodyType(),
-      bodyColor: getRandomColor(),
-      handColor: getRandomColor(),
-      legColor: getRandomColor(),
+      faceType,
+      faceColor,
+      bodyType,
+      bodyColor,
+      handColor,
+      legColor,
     });
+    if (userId) {
+      await supabase.from('users').upsert({
+        id: userId,
+        face_type: faceType,
+        face_color: faceColor,
+        body_type: bodyType,
+        body_color: bodyColor,
+        hand_color: handColor,
+        leg_color: legColor,
+      });
+    }
   };
 
   const submitMessage = (e: React.FormEvent<HTMLFormElement>) => {

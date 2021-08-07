@@ -41,4 +41,5 @@
 .avatar {
     position: absolute;
     transition: all 0.6s;
+    transform: translateX(-25%);
 }
