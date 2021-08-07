@@ -22,6 +22,9 @@ export default function Home() {
     handColor: '#000',
     legColor: '#000',
   });
+  const [myMessage, setMyMessage] = useState<string>();
+
+  const [typedMessage, setTypedMessage] = useState<string>('');
 
   const clickedGrass = (e: any): void => {
     if (e.target.id !== 'grass') {
@@ -75,6 +78,16 @@ export default function Home() {
       legColor: getRandomColor(),
     });
   };
+
+  const submitMessage = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!typedMessage) {
+      return;
+    }
+    setMyMessage(typedMessage);
+    setTypedMessage('');
+  };
+
   return (
     <div>
       <Head>
@@ -113,13 +126,14 @@ export default function Home() {
             attributes={{
               position: myPosition,
               style: myAvatar,
+              message: myMessage,
             }}
           ></Avatar>
         </div>
       </main>
 
       <button
-        className="fixed top-6 right-6"
+        className={`fixed top-6 right-6 ${styles.front}`}
         onClick={changeAvatar}
         title="Change avatar style"
       >
@@ -133,6 +147,23 @@ export default function Home() {
           <path d="M8 5a1 1 0 100 2h5.586l-1.293 1.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L13.586 5H8zM12 15a1 1 0 100-2H6.414l1.293-1.293a1 1 0 10-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L6.414 15H12z" />
         </svg>
       </button>
+
+      <form
+        className={`flex fixed bottom-4 left-1/2 ${styles.form} ${styles.front}`}
+        onSubmit={submitMessage}
+      >
+        <input
+          className="rounded-full border-2 border-black px-8 w-96 text-lg outline-none"
+          type="text"
+          value={typedMessage}
+          onChange={(e) => setTypedMessage(e.target.value)}
+          placeholder="Say hello to everyone!"
+        />
+        <div className="w-12"></div>
+        <button className="h-16 w-28 flex items-center justify-center bg-indigo-400 border-2 border-black rounded-full text-white text-lg">
+          Send
+        </button>
+      </form>
     </div>
   );
 }

@@ -2,6 +2,14 @@
   font-size: 0;
 }
 
+.front {
+  z-index: 2000;
+}
+
+.form {
+  transform: translateZ(100px) translateX(-50%);
+}
+
 .sky {
   background-color: #77DFF5;
   height: 314px;
