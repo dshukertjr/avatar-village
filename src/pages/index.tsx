@@ -19,6 +19,7 @@ export default function Home() {
   const [avatars, setAvatars] = useState<AvatarAttributes[]>([]);
 
   const stateRef = useRef<AvatarAttributes[]>([]);
+  stateRef.current = avatars;
 
   const [playWalk] = useSound('/sound/walk.wav', {
     volume: 1,
@@ -75,7 +76,7 @@ export default function Home() {
         .from('users')
         .on('*', (payload) => {
           const newRecord = payload.new;
-          if (newRecord.id != user!.id) {
+          if (newRecord && newRecord.id != user!.id) {
             const _avatars = stateRef.current;
             const targetIndex = _avatars.findIndex(
               (avatar) => newRecord.id == avatar.id
@@ -83,7 +84,6 @@ export default function Home() {
             if (targetIndex < 0) {
               _avatars.push(convertRowToAttributes(newRecord));
             } else {
-              const _avatars = avatars;
               if (_avatars[targetIndex].message != newRecord.message) {
                 playMessage();
               }
