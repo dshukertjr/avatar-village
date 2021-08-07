@@ -88,5 +88,25 @@ export default function Body({
           />
         </svg>
       );
+    default:
+      return (
+        <svg
+          width="130"
+          height="130"
+          viewBox="0 0 130 130"
+          fill={color}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            onClick={() => onClick()}
+            className="cursor-pointer pointer-events-auto"
+            cx="65"
+            cy="65"
+            r="63.5"
+            stroke="black"
+            strokeWidth="3"
+          />
+        </svg>
+      );
   }
 }

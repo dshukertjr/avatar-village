@@ -76,7 +76,7 @@ export default function Home() {
               const _avatars = avatars;
               _avatars[targetIndex] = convertRowToAttributes(newRecord);
             }
-            setAvatars(_avatars);
+            setAvatars([..._avatars]);
             console.log('set avatars called', _avatars);
           }
         })
@@ -103,11 +103,13 @@ export default function Home() {
   const [avatars, setAvatars] = useState<AvatarAttributes[]>([]);
 
   const convertRowToAttributes = (row: any): AvatarAttributes => {
+    console.log('row.face_type', row.face_type);
+    console.log('row.body_type', row.body_type);
     return {
       style: {
         faceType: row.face_type,
         faceColor: row.face_color,
-        bodyType: row.face_type,
+        bodyType: row.body_type,
         bodyColor: row.body_color,
         handColor: row.hand_color,
         legColor: row.leg_color,
@@ -123,7 +125,6 @@ export default function Home() {
   };
 
   const move = async (e: any): Promise<void> => {
-    console.log(e.target);
     if (e.target.id !== 'grass') {
       return;
     }
@@ -131,7 +132,6 @@ export default function Home() {
     const grassHeight = window.innerHeight - 314;
     const clickedX = e.clientX;
     const clickedY = grassHeight - (e.clientY - 314);
-    console.log('clientY', e.clientY);
     const x = (clickedX * 100) / grassWidth;
     const y = (clickedY * 100) / grassHeight;
     setMyPosition({ x, y });
