@@ -3,7 +3,7 @@ import styles from '../styles/Home.module.css';
 import Image from 'next/image';
 import buildingPic from '../../public/img/buildings.svg';
 import cloudsPic from '../../public/img/clouds.svg';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Avatar, {
   AvatarAttributes,
   AvatarStyle,
@@ -15,6 +15,10 @@ import Avatar, {
 import { makeid, supabase } from '../util/constants';
 
 export default function Home() {
+  const [avatars, setAvatars] = useState<AvatarAttributes[]>([]);
+
+  const stateRef = useRef<AvatarAttributes[]>([]);
+
   useEffect(() => {
     const setup = async () => {
       let user = supabase.auth.user();
@@ -63,21 +67,24 @@ export default function Home() {
         .from('users')
         .on('*', (payload) => {
           const newRecord = payload.new;
-          console.log('newRecord', newRecord);
-          console.log('userId', user!.id);
           if (newRecord.id != user!.id) {
-            const targetIndex = avatars.findIndex(
+            const _avatars = stateRef.current;
+            const targetIndex = _avatars.findIndex(
               (avatar) => newRecord.id == avatar.id
             );
-            const _avatars = avatars;
             if (targetIndex < 0) {
               _avatars.push(convertRowToAttributes(newRecord));
             } else {
               const _avatars = avatars;
               _avatars[targetIndex] = convertRowToAttributes(newRecord);
             }
+            const newAvatars = [];
+            for (const avatar of _avatars) {
+              newAvatars.push(avatar);
+            }
+            setAvatars(newAvatars);
             setAvatars([..._avatars]);
-            console.log('set avatars called', _avatars);
+            console.log('setAvatars called');
           }
         })
         .subscribe();
@@ -100,11 +107,7 @@ export default function Home() {
   const [myName, setMyName] = useState<string>('');
   const [typedMessage, setTypedMessage] = useState<string>('');
 
-  const [avatars, setAvatars] = useState<AvatarAttributes[]>([]);
-
   const convertRowToAttributes = (row: any): AvatarAttributes => {
-    console.log('row.face_type', row.face_type);
-    console.log('row.body_type', row.body_type);
     return {
       style: {
         faceType: row.face_type,

@@ -55,7 +55,7 @@ export default function Avatar({
   attributes: AvatarAttributes;
 }): ReactElement {
   const clickedAvatar = (): void => {
-    console.log('clicked avatar');
+    console.log('clicked avatar', attributes);
   };
   return (
     <div
