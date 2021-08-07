@@ -4,6 +4,8 @@
 
 Avatar Village is a place where people can gather to hang out. You can move around within the map and chat with people!
 
+Come try it out here: https://avatar-village.vercel.app/
+
 ## Figma
 
 https://www.figma.com/file/SjMWKsMuLKU5Owgs9pQqPH/Supabase-Hackathon?node-id=2%3A13
