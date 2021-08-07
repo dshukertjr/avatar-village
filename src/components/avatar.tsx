@@ -46,6 +46,7 @@ export interface AvatarAttributes {
   position: Position;
   message?: string;
   name?: string;
+  id: string;
 }
 
 export default function Avatar({
@@ -58,11 +59,11 @@ export default function Avatar({
   };
   return (
     <div
-      className={styles.avatar}
+      className={`${styles.avatar} pointer-events-none`}
       style={{
         left: `${attributes.position.x}%`,
         bottom: `${attributes.position.y}%`,
-        zIndex: Math.round(attributes.position.y),
+        zIndex: Math.round(100 - attributes.position.y),
       }}
     >
       <div onClick={clickedAvatar} className={styles.avatar}>
@@ -70,7 +71,7 @@ export default function Avatar({
           <div className={styles.message}>{attributes.message}</div>
         ) : null}
         <div className={styles.leg}>
-          <Leg color={attributes.style.legColor}></Leg>
+          <Leg color={attributes.style.legColor} onClick={clickedAvatar}></Leg>
         </div>
         <div className={styles.body}>
           {attributes.name ? (
@@ -81,15 +82,20 @@ export default function Avatar({
           <Body
             type={attributes.style.bodyType}
             color={attributes.style.bodyColor}
+            onClick={clickedAvatar}
           ></Body>
         </div>
         <div className={styles.hand}>
-          <Hand color={attributes.style.handColor}></Hand>
+          <Hand
+            color={attributes.style.handColor}
+            onClick={clickedAvatar}
+          ></Hand>
         </div>
         <div className={styles.face}>
           <Face
             type={attributes.style.faceType}
             color={attributes.style.faceColor}
+            onClick={clickedAvatar}
           ></Face>
         </div>
       </div>

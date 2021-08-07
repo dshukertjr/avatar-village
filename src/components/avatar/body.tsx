@@ -3,9 +3,11 @@ import { BodyType } from '../avatar';
 export default function Body({
   type,
   color,
+  onClick,
 }: {
   type: BodyType;
   color: string;
+  onClick: any;
 }) {
   switch (type) {
     case BodyType.round:
@@ -17,7 +19,15 @@ export default function Body({
           fill={color}
           xmlns="http://www.w3.org/2000/svg"
         >
-          <circle cx="65" cy="65" r="63.5" stroke="black" strokeWidth="3" />
+          <circle
+            onClick={() => onClick()}
+            className="cursor-pointer pointer-events-auto"
+            cx="65"
+            cy="65"
+            r="63.5"
+            stroke="black"
+            strokeWidth="3"
+          />
         </svg>
       );
     case BodyType.square:
@@ -30,6 +40,8 @@ export default function Body({
           xmlns="http://www.w3.org/2000/svg"
         >
           <rect
+            onClick={() => onClick()}
+            className="cursor-pointer pointer-events-auto"
             x="1.5"
             y="1.5"
             width="127"
@@ -50,6 +62,8 @@ export default function Body({
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
+            onClick={() => onClick()}
+            className="cursor-pointer pointer-events-auto"
             d="M128.5 65V128.5H1.5V65C1.5 29.9299 29.9299 1.5 65 1.5C100.07 1.5 128.5 29.9299 128.5 65Z"
             stroke="black"
             strokeWidth="3"
@@ -66,6 +80,8 @@ export default function Body({
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
+            onClick={() => onClick()}
+            className="cursor-pointer pointer-events-auto"
             d="M1.5 1.5H128.5V65C128.5 100.07 100.07 128.5 65 128.5C29.9299 128.5 1.5 100.07 1.5 65V1.5Z"
             stroke="black"
             strokeWidth="3"

@@ -5,6 +5,7 @@ import buildingPic from '../../public/img/buildings.svg';
 import cloudsPic from '../../public/img/clouds.svg';
 import React, { useEffect, useState } from 'react';
 import Avatar, {
+  AvatarAttributes,
   AvatarStyle,
   BodyType,
   COLORS,
@@ -26,8 +27,37 @@ export default function Home() {
         const user = supabase.auth.user();
         setUserId(user?.id);
       } else {
-        const user = supabase.auth.user();
-        setUserId(user?.id);
+        setUserId(user!.id);
+        const { data: myData } = await supabase
+          .from('users')
+          .select()
+          .eq('id', user!.id);
+        if (myData && myData.length > 0) {
+          const profile = myData![0];
+          setMyAvatar({
+            faceType: profile.face_type,
+            faceColor: profile.face_color,
+            bodyType: profile.body_type,
+            bodyColor: profile.body_color,
+            handColor: profile.hand_color,
+            legColor: profile.leg_color,
+          });
+          setMyName(profile.name);
+          setMyMessage(profile.message);
+          setMyPosition({ x: profile.x, y: profile.y });
+        }
+      }
+      const thirtyMinutesAgo = new Date();
+      thirtyMinutesAgo.setMinutes(thirtyMinutesAgo.getMinutes() - 10);
+      const { data } = await supabase
+        .from('users')
+        .select()
+        .gt('updated_at', thirtyMinutesAgo.toISOString());
+      if (data) {
+        const _avatars = data
+          .filter((row) => row.id != user!.id)
+          .map((row) => convertRowToAttributes(row));
+        setAvatars(_avatars);
       }
     };
     setup();
@@ -46,10 +76,32 @@ export default function Home() {
   });
   const [myMessage, setMyMessage] = useState<string>();
   const [myName, setMyName] = useState<string>();
-
   const [typedMessage, setTypedMessage] = useState<string>('');
 
+  const [avatars, setAvatars] = useState<AvatarAttributes[]>([]);
+
+  const convertRowToAttributes = (row: any): AvatarAttributes => {
+    return {
+      style: {
+        faceType: row.face_type,
+        faceColor: row.face_color,
+        bodyType: row.face_type,
+        bodyColor: row.body_color,
+        handColor: row.hand_color,
+        legColor: row.leg_color,
+      },
+      position: {
+        x: row.x,
+        y: row.y,
+      },
+      message: row.message,
+      name: row.name,
+      id: row.id,
+    } as AvatarAttributes;
+  };
+
   const move = async (e: any): Promise<void> => {
+    console.log(e.target);
     if (e.target.id !== 'grass') {
       return;
     }
@@ -184,14 +236,20 @@ export default function Home() {
           </div>
         </div>
         <div id="grass" className={`${styles.grass} relative`} onClick={move}>
-          <Avatar
-            attributes={{
-              position: myPosition,
-              style: myAvatar,
-              message: myMessage,
-              name: myName,
-            }}
-          ></Avatar>
+          {userId ? (
+            <Avatar
+              attributes={{
+                position: myPosition,
+                style: myAvatar,
+                message: myMessage,
+                name: myName,
+                id: userId,
+              }}
+            ></Avatar>
+          ) : null}
+          {avatars.map((avatar) => {
+            return <Avatar key={avatar.id} attributes={avatar}></Avatar>;
+          })}
         </div>
       </main>
 

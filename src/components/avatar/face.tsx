@@ -3,9 +3,11 @@ import { FaceType } from '../avatar';
 export default function Face({
   type,
   color,
+  onClick,
 }: {
   type: FaceType;
   color: string;
+  onClick: any;
 }) {
   if (type == FaceType.round) {
     return (
@@ -16,7 +18,15 @@ export default function Face({
         fill={color}
         xmlns="http://www.w3.org/2000/svg"
       >
-        <circle cx="53.5" cy="53.5" r="52" stroke="black" strokeWidth="3" />
+        <circle
+          onClick={() => onClick()}
+          className="cursor-pointer pointer-events-auto"
+          cx="53.5"
+          cy="53.5"
+          r="52"
+          stroke="black"
+          strokeWidth="3"
+        />
         <ellipse
           cx="31.677"
           cy="55.3404"
@@ -51,6 +61,8 @@ export default function Face({
         xmlns="http://www.w3.org/2000/svg"
       >
         <rect
+          onClick={() => onClick()}
+          className="cursor-pointer pointer-events-auto"
           x="1.5"
           y="1.5"
           width="104"
