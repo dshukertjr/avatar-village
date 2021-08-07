@@ -1,6 +1,6 @@
 # Avatar Village
 
-Avatar Village is a place where people can gather to hang out. You can move around within the map and chat with people!
+Avatar Village is a place where people can gather to hang out in realtime. You can move around within the map and chat with people! Avatar Village is inspired by [2021 Google I/O](https://www.google.co.jp/search?q=google+io+2021+game&hl=en&sxsrf=ALeKk025OgmtgY0wetTWu0ilG65_dxzxgA:1628331177708&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiG2rGr1p7yAhXYfXAKHce4DvcQ_AUoAXoECAEQAw&biw=1394&bih=764).
 
 Come try it out here: https://avatar-village.vercel.app/
 
