@@ -13,11 +13,19 @@ import Avatar, {
   Position,
 } from '../components/avatar';
 import { makeid, supabase } from '../util/constants';
+import useSound from 'use-sound';
 
 export default function Home() {
   const [avatars, setAvatars] = useState<AvatarAttributes[]>([]);
 
   const stateRef = useRef<AvatarAttributes[]>([]);
+
+  const [playWalk] = useSound('/sound/walk.wav', {
+    volume: 1,
+  });
+  const [playMessage] = useSound('/sound/message.wav', {
+    volume: 1,
+  });
 
   useEffect(() => {
     const setup = async () => {
@@ -76,13 +84,11 @@ export default function Home() {
               _avatars.push(convertRowToAttributes(newRecord));
             } else {
               const _avatars = avatars;
+              if (_avatars[targetIndex].message != newRecord.message) {
+                playMessage();
+              }
               _avatars[targetIndex] = convertRowToAttributes(newRecord);
             }
-            const newAvatars = [];
-            for (const avatar of _avatars) {
-              newAvatars.push(avatar);
-            }
-            setAvatars(newAvatars);
             setAvatars([..._avatars]);
             console.log('setAvatars called');
           }
@@ -128,6 +134,7 @@ export default function Home() {
   };
 
   const move = async (e: any): Promise<void> => {
+    playWalk();
     if (e.target.id !== 'grass') {
       return;
     }
@@ -206,6 +213,7 @@ export default function Home() {
 
   const submitMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    playMessage();
     if (!typedMessage) {
       return;
     }
