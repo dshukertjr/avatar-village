@@ -305,28 +305,30 @@ export default function Home() {
       </button>
 
       <form
-        className={`flex fixed bottom-4 left-1/2 ${styles.form} ${styles.front}`}
+        className={`w-full md:w-auto md:flex fixed bottom-4 left-1/2 ${styles.form} ${styles.front}`}
         onSubmit={submitMessage}
       >
         <input
-          className="rounded-full border-2 border-black px-8 w-40 text-lg outline-none"
+          className="h-16 rounded-full border-2 border-black px-8 w-40 text-lg outline-none"
           type="text"
           value={myName}
           onChange={setUserName}
           placeholder="User Name"
         />
-        <div className="w-12"></div>
-        <input
-          className="rounded-full border-2 border-black px-8 w-96 text-lg outline-none"
-          type="text"
-          value={typedMessage}
-          onChange={(e) => setTypedMessage(e.target.value)}
-          placeholder="Say hello to everyone!"
-        />
-        <div className="w-4"></div>
-        <button className="h-16 w-28 flex items-center justify-center bg-indigo-400 border-2 border-black rounded-full text-white text-lg">
-          Send
-        </button>
+        <div className="w-12 h-4"></div>
+        <div className="flex">
+          <input
+            className="h-16 rounded-full border-2 border-black px-8 w-96 text-lg outline-none"
+            type="text"
+            value={typedMessage}
+            onChange={(e) => setTypedMessage(e.target.value)}
+            placeholder="Say hello to everyone!"
+          />
+          <div className="w-4 h-4"></div>
+          <button className="h-16 w-28 flex items-center justify-center bg-indigo-400 border-2 border-black rounded-full text-white text-lg">
+            Send
+          </button>
+        </div>
       </form>
     </div>
   );
