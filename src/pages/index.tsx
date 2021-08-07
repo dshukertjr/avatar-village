@@ -135,10 +135,10 @@ export default function Home() {
   };
 
   const move = async (e: any): Promise<void> => {
-    playWalk();
     if (e.target.id !== 'grass') {
       return;
     }
+    playWalk();
     const grassWidth = window.innerWidth;
     const grassHeight = window.innerHeight - 314;
     const clickedX = e.clientX;
